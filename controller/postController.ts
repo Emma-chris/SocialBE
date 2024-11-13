@@ -1,0 +1,64 @@
+import { Request, Response } from "express";
+import bcrypt from "bcrypt";
+import userModel from "../model/userModel";
+import postModel from "../model/postModel";
+import { Types } from "mongoose";
+
+export const createPost = async (req: Request, res: Response) => {
+  try {
+    const { userID } = req.params;
+    const { message } = req.body;
+
+    const findUser = await userModel.findById(userID);
+
+    if (findUser) {
+      const post: any = await postModel.create({
+        message,
+      });
+
+      findUser.post.push(new Types.ObjectId(post?._id));
+      findUser.save();
+
+      return res.status(201).json({
+        message: "user's Post created successfully",
+        data: post,
+        status: 201,
+      });
+    } else {
+      return res.status(404).json({
+        error: "Error getting users",
+      });
+    }
+  } catch (error) {
+    return res.status(404).json({
+      error: error,
+    });
+  }
+};
+
+export const getAllPost = async (req: Request, res: Response) => {
+    try{
+const post = await postModel.find()
+return res.status(200).json({
+    message: 
+})
+    }catch() {
+        return
+    }
+}
+
+
+
+export const getOneUserPost = async (req: Request, res: Response) => {
+
+}
+
+
+export const likeOneUserPost = async (req: Request, res: Response) => {
+    try{
+const {userID, postID} = req.params
+const user = await userModel.findById(userID)
+    }catch() {
+        return
+    }
+}
