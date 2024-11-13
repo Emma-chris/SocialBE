@@ -37,28 +37,48 @@ export const createPost = async (req: Request, res: Response) => {
 };
 
 export const getAllPost = async (req: Request, res: Response) => {
-    try{
-const post = await postModel.find()
-return res.status(200).json({
-    message: 
-})
-    }catch() {
-        return
-    }
-}
-
-
+  try {
+    const user = await postModel.find();
+    return res.status(200).json({
+      message: "account created",
+      data: user,
+      status: 200,
+    });
+  } catch (error) {
+    return res.status(404).json({
+      error: error,
+    });
+  }
+};
 
 export const getOneUserPost = async (req: Request, res: Response) => {
-
-}
-
+  try {
+    const { userID } = req.body;
+    const user = await userModel.findById(userID).populate({
+      path: "post",
+      options: {
+        sort: {
+          createdAT: -1,
+        },
+      },
+    });
+    return res.status(201).json({
+      message: "account created",
+      data: user,
+      status: 201,
+    });
+  } catch (error) {
+    return res.status(404).json({
+      error: error,
+    });
+  }
+};
 
 export const likeOneUserPost = async (req: Request, res: Response) => {
-    try{
-const {userID, postID} = req.params
-const user = await userModel.findById(userID)
-    }catch() {
-        return
-    }
-}
+  try {
+    const { userID, postID } = req.params;
+    const user = await userModel.findById(userID);
+  } catch (e) {
+    return Error;
+  }
+};
